@@ -16,7 +16,7 @@ class Student
   void setLastName(char* newLastName);
   void setID(int newID);
   void setGPA(float newGPA);
-  void displayStudent(char* first, char* last, int ID, float GPA);
+  void displayStudent();
   ~Student();
 
  private:

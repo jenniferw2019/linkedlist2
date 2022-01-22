@@ -46,11 +46,62 @@ int main()
 	  ptrStudent->setLastName(tempLast);
 	  ptrStudent->setID(tempID);
 	  ptrStudent->setGPA(tempGPA);
+
+	  insertNode(studentList, studentList, studentList, ptrStudent);
 	}
 
       else if (strcmp(strInput, "PRINT") == 0)
 	{
-
+	  printStudent(studentList, studentList);
 	}
+    }
+  return 0;
+}
+
+void insertNode(Node* &head, Node* previous, Node* current, Student* newStudent)
+{
+
+  if (head == NULL)
+    {
+      head = new Node(newStudent);
+      cout << (head->getStudent())->getFirstName() << endl;
+    }
+  else if (newStudent->getID() < (head->getStudent())->getID())
+    {
+      Node* temp = head;
+      head = new Node(newStudent);
+      head->setNext(temp);
+    }
+  else if (current == NULL)
+    {
+      Node* tempNode = new Node(newStudent);
+      previous->setNext(tempNode);
+      (previous->getNext())->setNext(NULL);
+    }
+  else if (newStudent->getID() < (current->getStudent())->getID())
+    {
+      Node* tempN = new Node(newStudent);
+      previous->setNext(tempN);
+      tempN->setNext(current);
+    }
+  else
+    {
+      insertNode(head, current, current->getNext(), newStudent);
+    }
+}
+
+void printStudent(Node* head, Node* next)
+{
+
+  if (next == head)
+    {
+      cout << "list: " << endl;
+    }
+  if (next != NULL)
+    {
+      Student* tempstu = next->getStudent();
+      tempstu->displayStudent();
+
+      printStudent(head, next->getNext());
     }
 }

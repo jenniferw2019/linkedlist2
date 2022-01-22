@@ -39,12 +39,12 @@ void Student::setGPA(float newGPA)
 {
   gpa = newGPA;
 }
-void Student::displayStudent(char* first, char* last, int ID, float GPA)
+void Student::displayStudent()
 {
-  cout << first << " ";
-  cout << last << " ";
-  cout << ID << " ";
-  cout<<fixed<<setprecision(2)<< GPA << endl;
+  cout << "First Name: " << firstName << " ";
+  cout << "Last Name: " << lastName << " ";
+  cout << "ID: " << id << " ";
+  cout<<fixed<<setprecision(2)<< "GPA: " << gpa << endl;
 }
 
 Student::~Student() {}
