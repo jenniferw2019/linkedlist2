@@ -6,7 +6,8 @@
 
 void insertNode(Node* &head, Node* previous, Node* current, Student* newStudent);
 void printStudent(Node* head, Node* next);
-
+void deleteNode(Node* &head, Node* previous, Node* current, int id);
+float averageGPA(Node* head, Node* current, float sum, int counter);
 using namespace std;
 
 int main()
@@ -17,7 +18,7 @@ int main()
   
   while (runProgram == true)
     {
-      cout << "Type ADD or PRINT" << endl;
+      cout << "Type ADD, PRINT, DELETE, AVERAGE,  or QUIT" << endl;
       cin.get(strInput, 10);
       cin.get();
 
@@ -28,7 +29,7 @@ int main()
 	  int tempID;
 	  float tempGPA;
 
-	  cout << "Type into for new student" << endl;
+	  cout << "Type info for new student" << endl;
 	  Student* ptrStudent = new Student();
 	  cout << "Enter first name" << endl;
 	  cin.get(tempFirst, 100);
@@ -38,9 +39,24 @@ int main()
 	  cin.get();
 	  cout << "Enter id" << endl;
 	  cin >> tempID;
+	  if (cin.fail())
+	    {
+	      cout << "Error. Student ID input should be a integer value." << endl;
+	      cin.clear();
+	      //cin.ignore();	      
+	      //break;
+	      cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	    }
 	  cin.get();
 	  cout << "Enter gpa" << endl;
 	  cin >> tempGPA;
+	  if (cin.fail())
+	    {
+	      cout << "Error. Student GPA input should be a float value." << endl;
+	      cin.clear();
+	      cin.ignore();
+	      break;
+	    }
 	  cin.get();
 	  ptrStudent->setFirstName(tempFirst);
 	  ptrStudent->setLastName(tempLast);
@@ -53,6 +69,28 @@ int main()
       else if (strcmp(strInput, "PRINT") == 0)
 	{
 	  printStudent(studentList, studentList);
+	}
+      else if (strcmp(strInput, "DELETE") == 0)
+	{
+	  int deleteID;
+	  cout << "Type a id to delete" << endl;
+	  cin >> deleteID;
+	  cin.get();
+	  deleteNode(studentList, studentList, studentList, deleteID);
+	    
+	}
+      else if (strcmp(strInput, "AVERAGE") == 0)
+	{
+	  float sum = 0;
+	  float counter = 0;
+	  float averageGpa;
+	  averageGpa = averageGPA(studentList, studentList, sum, counter);
+	  cout << fixed<<setprecision(2) << averageGpa << endl;
+	}
+      
+      else if (strcmp(strInput, "QUIT") == 0)
+	{
+	  runProgram = false;
 	}
     }
   return 0;
@@ -104,4 +142,63 @@ void printStudent(Node* head, Node* next)
 
       printStudent(head, next->getNext());
     }
+}
+
+void deleteNode(Node* &head, Node* previous, Node* current, int id)
+{
+  
+  if (head == NULL)
+    {
+      cout << "No students in list" << endl;
+    }
+  else
+    {
+  
+      if ((head->getStudent())->getID() == id)
+	{
+	  Node* temph = head;
+	  head = (head->getNext());
+	  delete temph;
+	}
+      else if (current == NULL)
+	{
+	  cout << "No such ID" << endl;
+	}
+      else if ((current->getStudent())->getID() == id)
+	{
+	  Node* tempN = current->getNext();
+	  previous->setNext(current->getNext());
+	  delete current;
+	}
+      else
+	{
+	  deleteNode(head, current, current->getNext(), id);
+	}
+    }
+}
+
+float averageGPA(Node* head, Node* current, float sum, int counter)
+{
+  
+  if (head == NULL)
+    {
+      cout << "No GPA to average" << endl;
+      return 0;
+    }
+  
+  else
+    {
+      if (current != NULL)
+	{
+	  sum = sum + (current->getStudent())->getGPA();
+	  counter++;
+	  return averageGPA(head, current->getNext(), sum, counter);
+	}
+      else
+	{
+	  return sum/counter;
+	}
+    }
+ 
+  
 }
