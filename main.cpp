@@ -1,9 +1,16 @@
+/*
+This program allows user to add student info, print it out, delete them, and calculate the average gpa.
+User can enter student first and last name, id, and gpa. 
+Author: Jennifer Wang
+1/29/22
+ */
 #include <iostream>
 #include <cstring>
 #include <iomanip>
 #include "node.h"
 #include "student.h"
 
+//declare functions
 void insertNode(Node* &head, Node* previous, Node* current, Student* newStudent);
 void printStudent(Node* head, Node* next);
 void deleteNode(Node* &head, Node* previous, Node* current, int id);
@@ -22,6 +29,7 @@ int main()
       cin.get(strInput, 10);
       cin.get();
 
+      // if ADD is typed, creates a new entry for a student.
       if (strcmp(strInput, "ADD") == 0)
 	{
 	  char tempFirst[100];
@@ -29,6 +37,7 @@ int main()
 	  int tempID;
 	  float tempGPA;
 
+	  //input info for new student
 	  cout << "Type info for new student" << endl;
 	  Student* ptrStudent = new Student();
 	  cout << "Enter first name" << endl;
@@ -41,44 +50,63 @@ int main()
 	  cin >> tempID;
 	  if (cin.fail())
 	    {
+	      //error message if not int value
 	      cout << "Error. Student ID input should be a integer value." << endl;
 	      cin.clear();
-	      //cin.ignore();	      
-	      //break;
 	      cin.ignore(numeric_limits<streamsize>::max(),'\n');
 	    }
-	  cin.get();
-	  cout << "Enter gpa" << endl;
-	  cin >> tempGPA;
-	  if (cin.fail())
+	  else
 	    {
-	      cout << "Error. Student GPA input should be a float value." << endl;
-	      cin.clear();
-	      cin.ignore();
-	      break;
-	    }
-	  cin.get();
-	  ptrStudent->setFirstName(tempFirst);
-	  ptrStudent->setLastName(tempLast);
-	  ptrStudent->setID(tempID);
-	  ptrStudent->setGPA(tempGPA);
+	    cin.get();
+	    cout << "Enter gpa" << endl;
+	    cin >> tempGPA;
+	    if (cin.fail())
+	      {
+		// error if not float value
+		cout << "Error. Student GPA input should be a float value." << endl;
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	      }
+	    else
+	      {
+		cin.get();
+		//set into to student pointer
+		ptrStudent->setFirstName(tempFirst);
+		ptrStudent->setLastName(tempLast);
+		ptrStudent->setID(tempID);
+		ptrStudent->setGPA(tempGPA);
 
-	  insertNode(studentList, studentList, studentList, ptrStudent);
+		//insert node
+		insertNode(studentList, studentList, studentList, ptrStudent);
+	      }
+	    }
 	}
 
+      // if PRINT is typed, all students currently stored are printed
       else if (strcmp(strInput, "PRINT") == 0)
 	{
 	  printStudent(studentList, studentList);
 	}
+      // if DELETE is typed, deletes the student with the corresponding id
       else if (strcmp(strInput, "DELETE") == 0)
 	{
 	  int deleteID;
 	  cout << "Type a id to delete" << endl;
 	  cin >> deleteID;
-	  cin.get();
-	  deleteNode(studentList, studentList, studentList, deleteID);
-	    
+	  if (cin.fail())
+	    {
+	      cout << "Error. Student ID input should be a integer value." << endl;
+	      cin.clear();
+	      cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	    }
+	  else
+	    {
+	      cin.get();
+	      //delete the student 
+	      deleteNode(studentList, studentList, studentList, deleteID);
+	    }  
 	}
+      // if AVERAGE is typed, calculate the average of all student GPAs
       else if (strcmp(strInput, "AVERAGE") == 0)
 	{
 	  float sum = 0;
@@ -87,7 +115,7 @@ int main()
 	  averageGpa = averageGPA(studentList, studentList, sum, counter);
 	  cout << fixed<<setprecision(2) << averageGpa << endl;
 	}
-      
+      // stops the program
       else if (strcmp(strInput, "QUIT") == 0)
 	{
 	  runProgram = false;
@@ -96,26 +124,31 @@ int main()
   return 0;
 }
 
+//insert node function (add function using recursion)
 void insertNode(Node* &head, Node* previous, Node* current, Student* newStudent)
 {
 
+  //if head is null, set new student as head
   if (head == NULL)
     {
       head = new Node(newStudent);
-      cout << (head->getStudent())->getFirstName() << endl;
+
     }
+  // set new student as head
   else if (newStudent->getID() < (head->getStudent())->getID())
     {
       Node* temp = head;
       head = new Node(newStudent);
       head->setNext(temp);
     }
+  //set new student as last node in list
   else if (current == NULL)
     {
       Node* tempNode = new Node(newStudent);
       previous->setNext(tempNode);
       (previous->getNext())->setNext(NULL);
     }
+  // set new student in between two students
   else if (newStudent->getID() < (current->getStudent())->getID())
     {
       Node* tempN = new Node(newStudent);
@@ -128,6 +161,7 @@ void insertNode(Node* &head, Node* previous, Node* current, Student* newStudent)
     }
 }
 
+//print function using recursion
 void printStudent(Node* head, Node* next)
 {
 
@@ -144,6 +178,7 @@ void printStudent(Node* head, Node* next)
     }
 }
 
+//delete function using recursion
 void deleteNode(Node* &head, Node* previous, Node* current, int id)
 {
   
@@ -177,6 +212,7 @@ void deleteNode(Node* &head, Node* previous, Node* current, int id)
     }
 }
 
+//calculate average gpa function using recursion
 float averageGPA(Node* head, Node* current, float sum, int counter)
 {
   

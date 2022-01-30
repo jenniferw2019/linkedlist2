@@ -1,3 +1,4 @@
+//header file for student
 #ifndef STUDENT_H
 #define STUDENT_H
 #include <iostream>
@@ -7,6 +8,7 @@ using namespace std;
 class Student
 {
  public:
+  //define functions
   Student();
   char* getFirstName();
   char* getLastName();
@@ -20,6 +22,7 @@ class Student
   ~Student();
 
  private:
+  //variables
   char firstName[40];
   char lastName[40];
   int id;

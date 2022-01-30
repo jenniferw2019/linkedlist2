@@ -1,3 +1,4 @@
+//cpp file for student
 #include <iostream>
 #include <cstring>
 #include <iomanip>
@@ -41,10 +42,10 @@ void Student::setGPA(float newGPA)
 }
 void Student::displayStudent()
 {
-  cout << "First Name: " << firstName << " ";
-  cout << "Last Name: " << lastName << " ";
-  cout << "ID: " << id << " ";
-  cout<<fixed<<setprecision(2)<< "GPA: " << gpa << endl;
+  cout << firstName << " ";
+  cout << lastName << ", ";
+  cout << id << ", ";
+  cout<<fixed<<setprecision(2)<< gpa << endl;
 }
 
 Student::~Student() {}
